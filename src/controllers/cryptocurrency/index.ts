@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
-import { getCoinPrice } from '@utils/coinGecko';
+import CrypticBase from 'cryptic-base';
+import { getCoinPrice } from '@services/coinGecko';
+
+const crypticbase = new CrypticBase(false);
 
 export async function getPrice(req: Request, res: Response): Promise<Response> {
   try {
@@ -24,6 +27,33 @@ export async function getPrice(req: Request, res: Response): Promise<Response> {
     return res.status(500).send({
       status_code: 500,
       results: [],
+      errors: [err.message],
+    });
+  }
+}
+
+export async function createCryptocurrencies(
+  req: Request,
+  res: Response,
+): Promise<Response> {
+  try {
+    const { icon, name, symbol } = req.body;
+
+    const newCryptocurrency = await crypticbase.createCryptocurrency({
+      icon,
+      name,
+      symbol,
+    });
+
+    return res.status(200).send({
+      status_code: 200,
+      results: newCryptocurrency,
+      errors: [],
+    });
+  } catch (err) {
+    return res.status(500).send({
+      status_code: 500,
+      results: {},
       errors: [err.message],
     });
   }

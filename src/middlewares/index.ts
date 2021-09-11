@@ -2,17 +2,10 @@ import { Application, urlencoded, json } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import session from 'express-session';
-import bodyParser from 'body-parser';
 
 import corsOptions from '@config/middlewares/cors';
 
 export default (app: Application): void => {
-  app.use(
-    bodyParser.json({
-      limit: '50mb',
-    }),
-  );
-
   app.use(cors(corsOptions));
 
   app.use(json());
@@ -34,5 +27,7 @@ export default (app: Application): void => {
     }),
   );
 
-  app.use(morgan('dev'));
+  if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+  }
 };

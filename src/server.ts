@@ -1,10 +1,9 @@
+import { success } from '@utils/logger/logger';
 import chalk from 'chalk';
-import { success, warning } from '@utils/logger/logger';
+import { checkEnvironmentVariable } from '@utils/checkers/env';
 import app from './app';
 
-if (!process.env.NODE_ENV) {
-  warning('NODE_ENV environment variable is missing');
-}
+checkEnvironmentVariable();
 
 const port = process.env.PORT || 5002;
 
