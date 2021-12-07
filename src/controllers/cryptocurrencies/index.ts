@@ -1,13 +1,11 @@
 import { Request, Response } from 'express';
-import CrypticBase from 'cryptic-base';
+import { getCryptocurrencies } from 'cryptic-base';
 
 import { get } from '@services/api';
 
-const crypticbase = new CrypticBase(false);
-
 export async function index(req: Request, res: Response): Promise<Response> {
   try {
-    const cryptocurrencies = await crypticbase.getCryptocurrencies(null);
+    const cryptocurrencies = await getCryptocurrencies(null);
 
     return res.status(200).send({
       status_code: 200,

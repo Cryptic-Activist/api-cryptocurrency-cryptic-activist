@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import CrypticBase from 'cryptic-base';
+import { createCryptocurrency, getCryptocurrency } from 'cryptic-base';
 import { getCoinPrice } from '@services/coinGecko';
 
-const crypticbase = new CrypticBase(false);
+import { get } from '@services/api';
 
 export async function getPrice(req: Request, res: Response): Promise<Response> {
   try {
@@ -32,28 +32,88 @@ export async function getPrice(req: Request, res: Response): Promise<Response> {
   }
 }
 
-export async function createCryptocurrencies(
+export async function getCryptocurrencyController(
   req: Request,
   res: Response,
 ): Promise<Response> {
   try {
-    const { icon, name, symbol } = req.body;
+    const { coingecko_id } = req.query;
 
-    const newCryptocurrency = await crypticbase.createCryptocurrency({
-      icon,
-      name,
-      symbol,
+    const crypto = await getCryptocurrency({
+      coingecko_id,
     });
+
+    if (!crypto) {
+      return res.status(400).send({
+        status_code: 400,
+        results: {},
+        errors: ['Coin does not exist!'],
+      });
+    }
 
     return res.status(200).send({
       status_code: 200,
-      results: newCryptocurrency,
+      results: {
+        coingecko_id: crypto.coingecko_id,
+        icon: crypto.icon,
+        id: crypto.id,
+        name: crypto.name,
+        symbol: crypto.symbol,
+      },
       errors: [],
     });
   } catch (err) {
     return res.status(500).send({
       status_code: 500,
-      results: {},
+      results: [],
+      errors: [err.message],
+    });
+  }
+}
+
+export async function createCryptocurrencyCoinGecko(
+  req: Request,
+  res: Response,
+): Promise<Response> {
+  try {
+    const { coingecko_id } = req.body;
+
+    const data = await get(
+      `https://api.coingecko.com/api/v3/coins/${coingecko_id}`,
+    );
+
+    if (data.error) {
+      return res.status(400).send({
+        status_code: 400,
+        results: {},
+        errors: [data.error],
+      });
+    }
+
+    const newCrypto = await createCryptocurrency({
+      icon: data.image.small,
+      name: data.name,
+      symbol: data.symbol.toUpperCase(),
+      coingecko_id: data.id,
+    });
+
+    if (!newCrypto) {
+      return res.status(400).send({
+        status_code: 400,
+        results: {},
+        errors: ['Coin already exists!'],
+      });
+    }
+
+    return res.status(200).send({
+      status_code: 200,
+      results: newCrypto,
+      errors: [],
+    });
+  } catch (err) {
+    return res.status(500).send({
+      status_code: 500,
+      results: [],
       errors: [err.message],
     });
   }
