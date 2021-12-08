@@ -14,7 +14,7 @@ export async function getPrice(req: Request, res: Response): Promise<Response> {
     if (price[id] && Object.entries(price[id]).length > 0) {
       return res.status(200).send({
         status_code: 200,
-        results: price,
+        results: Object.values(price[id])[0],
         errors: [],
       });
     }
