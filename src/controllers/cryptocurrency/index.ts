@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createCryptocurrency, getCryptocurrency } from 'cryptic-base';
+import { createCryptocurrency, getCryptocurrency } from 'base-ca';
 import { getCoinPrice } from '@services/coinGecko';
 
 import { get } from '@services/api';
@@ -37,10 +37,10 @@ export async function getCryptocurrencyController(
   res: Response,
 ): Promise<Response> {
   try {
-    const { coingecko_id } = req.query;
+    const { cryptocurrencySymbol } = req.query;
 
     const crypto = await getCryptocurrency({
-      coingecko_id,
+      coingeckoId: cryptocurrencySymbol as string,
     });
 
     if (!crypto) {
@@ -54,8 +54,7 @@ export async function getCryptocurrencyController(
     return res.status(200).send({
       status_code: 200,
       results: {
-        coingecko_id: crypto.coingecko_id,
-        icon: crypto.icon,
+        coingecko_id: crypto.coingeckoId,
         id: crypto.id,
         name: crypto.name,
         symbol: crypto.symbol,
@@ -91,10 +90,9 @@ export async function createCryptocurrencyCoinGecko(
     }
 
     const newCrypto = await createCryptocurrency({
-      icon: data.image.small,
       name: data.name,
       symbol: data.symbol.toUpperCase(),
-      coingecko_id: data.id,
+      coingeckoId: data.id,
     });
 
     if (!newCrypto) {

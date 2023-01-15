@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { getCryptocurrencies } from 'cryptic-base';
+import { createCryptocurrency, getCryptocurrencies } from 'base-ca';
 
 import { get } from '@services/api';
 
-export async function index(req: Request, res: Response): Promise<Response> {
+export const index = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const cryptocurrencies = await getCryptocurrencies(null);
+    const cryptocurrencies = await getCryptocurrencies();
 
     return res.status(200).send({
       status_code: 200,
@@ -19,7 +19,7 @@ export async function index(req: Request, res: Response): Promise<Response> {
       errors: [err.message],
     });
   }
-}
+};
 
 export async function indexCoinGecko(
   req: Request,
@@ -29,16 +29,30 @@ export async function indexCoinGecko(
     const data = await get('https://api.coingecko.com/api/v3/coins/list');
 
     const response = data.filter(
-      (crypto) => crypto.id.includes('long') === false &&
+      (crypto) =>
+        crypto.id.includes('long') === false &&
         crypto.id.includes('short') === false,
     );
 
+    const createdCryptocurrencyMapped = response.map(async (cryptocurrency) => {
+      const createdCryptocurrency = await createCryptocurrency({
+        coingeckoId: cryptocurrency.id,
+        name: cryptocurrency.name,
+        symbol: cryptocurrency.symbol,
+      });
+
+      return createdCryptocurrency;
+    });
+
+    const promises = await Promise.all(createdCryptocurrencyMapped);
+
     return res.status(200).send({
       status_code: 200,
-      results: response,
+      results: promises,
       errors: [],
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       status_code: 500,
       results: [],
@@ -55,7 +69,8 @@ export async function createCryptocurrenciesCoinGecko(
     const data = await get('https://api.coingecko.com/api/v3/coins/list');
 
     const response = data.filter(
-      (crypto) => crypto.id.includes('long') === false &&
+      (crypto) =>
+        crypto.id.includes('long') === false &&
         crypto.id.includes('short') === false,
     );
 

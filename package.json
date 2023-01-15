@@ -12,11 +12,7 @@
     "refresh": "rm -rf ./node_modules ./yarn.lock ./yarn-error.log && yarn install"
   },
   "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
-      "pre-commit": "lint-staged"
-    }
+    "hooks": {}
   },
   "lint-staged": {
     "*.ts": [
