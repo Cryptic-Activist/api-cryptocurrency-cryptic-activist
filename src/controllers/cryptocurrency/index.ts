@@ -54,7 +54,7 @@ export async function getCryptocurrencyController(
     return res.status(200).send({
       status_code: 200,
       results: {
-        coingecko_id: crypto.coingeckoId,
+        coingeckoId: crypto.coingeckoId,
         id: crypto.id,
         name: crypto.name,
         symbol: crypto.symbol,
