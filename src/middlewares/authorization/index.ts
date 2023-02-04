@@ -7,7 +7,20 @@ export async function authenticateUser(
   next: NextFunction,
 ): Promise<Response> {
   try {
-    const data = await getAuth(process.env.USER_API_ENDPOINT, req.headers.authorization);
+    const { headers } = req;
+    const { authorization } = headers;
+    if (!authorization) {
+      return res.status(401).send({
+        status_code: 401,
+        results: {},
+        errors: ['Authorization token is required'],
+      });
+    }
+
+    const data = await getAuth(
+      process.env.USER_API_ENDPOINT,
+      req.headers.authorization,
+    );
 
     if (data.status_code === 200) {
       next();
@@ -19,6 +32,7 @@ export async function authenticateUser(
       });
     }
   } catch (err) {
+    console.log(err);
     return res.status(401).send({
       status_code: 401,
       results: {},

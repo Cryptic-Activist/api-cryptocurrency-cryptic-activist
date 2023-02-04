@@ -66,6 +66,7 @@ export async function createCryptocurrenciesCoinGecko(
   res: Response,
 ): Promise<Response> {
   try {
+    console.log('Working...');
     const data = await get('https://api.coingecko.com/api/v3/coins/list');
 
     const response = data.filter(
