@@ -1,5 +1,9 @@
+import {
+  createCryptocurrency,
+  createManyCryptocurrencies,
+  getCryptocurrencies,
+} from 'base-ca';
 import { Request, Response } from 'express';
-import { createCryptocurrency, getCryptocurrencies } from 'base-ca';
 
 import { get } from '@services/api';
 
@@ -61,44 +65,33 @@ export async function indexCoinGecko(
   }
 }
 
-export async function createCryptocurrenciesCoinGecko(
+export const createCryptocurrenciesCoinGecko = async (
   req: Request,
   res: Response,
-): Promise<Response> {
+): Promise<Response> => {
   try {
-    console.log('Working...');
     const data = await get('https://api.coingecko.com/api/v3/coins/list');
 
-    const response = data.filter(
-      (crypto) =>
-        crypto.id.includes('long') === false &&
-        crypto.id.includes('short') === false,
-    );
+    const response = data
+      .filter(
+        ({ id }) =>
+          id.includes('long') === false && id.includes('short') === false,
+      )
+      .map(({ id, name, symbol }) => ({ coingeckoId: id, name, symbol }));
 
-    console.log(response);
-
-    // response.forEach(async (c) => {
-    //   try {
-    //     const coinData = await get(
-    //       `https://api.coingecko.com/api/v3/coins/ethereum`,
-    //     );
-
-    //     console.log(coinData);
-    //   } catch (err) {
-    //     console.log('error');
-    //   }
-    // });
+    const created = await createManyCryptocurrencies(response);
 
     return res.status(200).send({
       status_code: 200,
-      results: response,
+      results: created,
       errors: [],
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       status_code: 500,
       results: [],
       errors: [err.message],
     });
   }
-}
+};

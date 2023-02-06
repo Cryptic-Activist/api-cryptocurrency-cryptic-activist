@@ -13,22 +13,39 @@ export async function get(endpoint: string): Promise<any> {
   return data;
 }
 
-export async function getAuth(endpoint: string, authorization: string): Promise<any> {
-  const response = await fetch(
-    `${endpoint}/user/authorization/authorize`,
-    {
-      method: 'GET',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: authorization,
-      },
+export async function getAuth(
+  endpoint: string,
+  authorization: string,
+): Promise<any> {
+  const response = await fetch(`${endpoint}/user/authorization/authorize`, {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: authorization,
     },
-  );
+  });
 
   const data = await response.json();
 
   return data;
 }
+
+export const getAdminAuth = async (
+  endpoint: string,
+  authorization: string,
+): Promise<any> => {
+  const response = await fetch(`${endpoint}/admins/authorization/authorize`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: authorization,
+    },
+  });
+
+  const data = await response.json();
+
+  return data;
+};

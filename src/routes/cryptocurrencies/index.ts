@@ -1,12 +1,10 @@
 import { Router } from 'express';
 
 import {
+  createCryptocurrenciesCoinGecko,
   index,
   indexCoinGecko,
-  createCryptocurrenciesCoinGecko,
 } from '@controllers/cryptocurrencies';
-
-import { authenticateUser } from '@middlewares/authorization';
 
 const router = Router();
 
@@ -16,7 +14,7 @@ router.get('/coin-gecko', indexCoinGecko);
 
 router.post(
   '/coin-gecko/create',
-  authenticateUser,
+  // authenticateUser,
   createCryptocurrenciesCoinGecko,
 );
 
