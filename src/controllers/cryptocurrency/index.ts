@@ -1,12 +1,14 @@
-import { Request, Response } from 'express';
-import { createCryptocurrency, getCryptocurrency } from 'base-ca';
 import { getCoinPrice } from '@services/coinGecko';
+import { createCryptocurrency, getCryptocurrency } from 'base-ca';
+import { Request, Response } from 'express';
 
 import { get } from '@services/api';
 
 export async function getPrice(req: Request, res: Response): Promise<Response> {
   try {
     const { id, fiatSymbol } = req.query;
+
+    console.log({ id, fiatSymbol });
 
     // @ts-ignore
     const price = await getCoinPrice(id, fiatSymbol);
