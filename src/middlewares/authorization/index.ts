@@ -1,42 +1,39 @@
-import { Request, Response, NextFunction } from 'express';
 import { getAuth } from '@services/api';
+import { NextFunction, Request, Response } from 'express';
+import { AuthenticateUser } from './zod';
 
-export async function authenticateUser(
+export const authenticateUser = async (
   req: Request,
   res: Response,
   next: NextFunction,
-): Promise<Response> {
+) => {
   try {
     const { headers } = req;
     const { authorization } = headers;
-    if (!authorization) {
+
+    const authorized = AuthenticateUser.safeParse(authorization);
+
+    if (!authorized.success) {
       return res.status(401).send({
         status_code: 401,
-        results: {},
-        errors: ['Authorization token is required'],
+        // @ts-ignore
+        errors: authorized.error,
       });
     }
 
-    const data = await getAuth(
-      process.env.USER_API_ENDPOINT,
-      req.headers.authorization,
-    );
+    const auth = await getAuth(authorization);
 
-    if (data.status_code === 200) {
-      next();
-    } else {
+    if (!auth) {
       return res.status(401).send({
         status_code: 401,
-        results: {},
-        errors: [],
       });
     }
+
+    next();
   } catch (err) {
-    console.log(err);
     return res.status(401).send({
       status_code: 401,
-      results: {},
       errors: [err.message],
     });
   }
-}
+};

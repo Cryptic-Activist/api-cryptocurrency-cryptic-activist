@@ -1,53 +1,66 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import {
+  CreateCryptocurrencyCoinGecko,
+  GetCryptocurrency,
+  GetPrice,
+} from './zod';
 
-export function validateCreateCryptocurrencyCoinGecko(
+export const validateGetPrice = (
   req: Request,
   res: Response,
   next: NextFunction,
-): NextFunction | Response {
-  const { coingecko_id } = req.body;
+): NextFunction | Response => {
+  const { query } = req;
 
-  const errors: string[] = [];
+  const validated = GetPrice.safeParse(query);
 
-  if (!coingecko_id) {
-    errors.push('coingecko_id is required');
-  } else if (coingecko_id.length === 0) {
-    errors.push('coingecko_id must be valid.');
-  }
-
-  if (errors.length > 0) {
+  if (!validated.success) {
     return res.status(400).send({
       status_code: 400,
-      results: {},
-      errors,
+      // @ts-ignore
+      errors: validated.error,
     });
   }
 
   next();
-}
+};
 
-export function validateGetCryptocurrency(
+export const validateCreateCryptocurrencyCoinGecko = (
   req: Request,
   res: Response,
   next: NextFunction,
-): NextFunction | Response {
-  const { cryptocurrencySymbol } = req.query;
+): NextFunction | Response => {
+  const { body } = req;
 
-  const errors: string[] = [];
+  const validated = CreateCryptocurrencyCoinGecko.safeParse(body);
 
-  if (!cryptocurrencySymbol) {
-    errors.push('cryptocurrencySymbol is required');
-  } else if (cryptocurrencySymbol.length === 0) {
-    errors.push('cryptocurrencySymbol must be valid.');
-  }
-
-  if (errors.length > 0) {
+  if (!validated.success) {
     return res.status(400).send({
       status_code: 400,
-      results: {},
-      errors,
+      // @ts-ignore
+      errors: validated.error,
     });
   }
 
   next();
-}
+};
+
+export const validateGetCryptocurrency = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): NextFunction | Response => {
+  const { query } = req;
+
+  const validated = GetCryptocurrency.safeParse(query);
+
+  if (!validated.success) {
+    return res.status(400).send({
+      status_code: 400,
+      // @ts-ignore
+      errors: validated.error,
+    });
+  }
+
+  next();
+};

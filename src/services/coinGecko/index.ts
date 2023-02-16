@@ -1,13 +1,13 @@
-import { get } from '@services/api';
+import { fetchGet } from '@services/axios';
 
-export async function getCoinPrice(
-  ids: string,
-  fiatSymbol: string,
-): Promise<any> {
-  const data = await get(
+export const getCoinPrice = async (ids: string, fiatSymbol: string) => {
+  const response = await fetchGet(
     `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=${fiatSymbol}`,
   );
-  // const data = await response.json();
 
-  return data;
-}
+  if (response.status !== 200) {
+    return null;
+  }
+
+  return response.data;
+};

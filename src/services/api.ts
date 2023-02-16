@@ -1,37 +1,19 @@
 import fetch from 'node-fetch';
+import { USER_API_ENDPOINT } from '../constants/envs';
+import { fetchGet } from './axios';
 
-export async function get(endpoint: string): Promise<any> {
-  const response = await fetch(endpoint, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+export const getAuth = async (authorization: string) => {
+  const response = await fetchGet(
+    `${USER_API_ENDPOINT}/users/authorization/authorize`,
+    { Authorization: authorization },
+  );
 
-  const data = await response.json();
+  if (response.status !== 200) {
+    return null;
+  }
 
-  return data;
-}
-
-export async function getAuth(
-  endpoint: string,
-  authorization: string,
-): Promise<any> {
-  const response = await fetch(`${endpoint}/user/authorization/authorize`, {
-    method: 'GET',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: authorization,
-    },
-  });
-
-  const data = await response.json();
-
-  return data;
-}
+  return response.data;
+};
 
 export const getAdminAuth = async (
   endpoint: string,

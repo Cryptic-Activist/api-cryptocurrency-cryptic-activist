@@ -1,48 +1,45 @@
+import { fetchGet } from '@services/axios';
 import { getCoinPrice } from '@services/coinGecko';
 import { createCryptocurrency, getCryptocurrency } from 'base-ca';
 import { Request, Response } from 'express';
 
-import { get } from '@services/api';
-
-export async function getPrice(req: Request, res: Response): Promise<Response> {
+export const getPrice = async (req: Request, res: Response) => {
   try {
-    const { id, fiatSymbol } = req.query;
-
-    console.log({ id, fiatSymbol });
+    const { query } = req;
+    const { id, fiatSymbol } = query;
 
     // @ts-ignore
     const price = await getCoinPrice(id, fiatSymbol);
     // @ts-ignore
-    if (price[id] && Object.entries(price[id]).length > 0) {
+    if (price && price[id] && Object.entries(price[id]).length > 0) {
       return res.status(200).send({
         status_code: 200,
         results: price,
-        errors: [],
       });
     }
+
     return res.status(400).send({
       status_code: 400,
-      results: {},
       errors: ['Cryptocurrency not found.'],
     });
   } catch (err) {
     return res.status(500).send({
       status_code: 500,
-      results: [],
       errors: [err.message],
     });
   }
-}
+};
 
-export async function getCryptocurrencyController(
+export const getCryptocurrencyController = async (
   req: Request,
   res: Response,
-): Promise<Response> {
+) => {
   try {
     const { cryptocurrencySymbol } = req.query;
 
     const crypto = await getCryptocurrency({
-      coingeckoId: cryptocurrencySymbol as string,
+      // @ts-ignore
+      coingeckoId: cryptocurrencySymbol,
     });
 
     if (!crypto) {
@@ -70,37 +67,35 @@ export async function getCryptocurrencyController(
       errors: [err.message],
     });
   }
-}
+};
 
-export async function createCryptocurrencyCoinGecko(
+export const createCryptocurrencyCoinGecko = async (
   req: Request,
   res: Response,
-): Promise<Response> {
+) => {
   try {
-    const { coingecko_id } = req.body;
+    const { coingeckoId } = req.body;
 
-    const data = await get(
-      `https://api.coingecko.com/api/v3/coins/${coingecko_id}`,
+    const response = await fetchGet(
+      `https://api.coingecko.com/api/v3/coins/${coingeckoId}`,
     );
 
-    if (data.error) {
+    if (response.status !== 200) {
       return res.status(400).send({
         status_code: 400,
-        results: {},
-        errors: [data.error],
+        errors: ["Couldn't fetch cryptocurrency information"],
       });
     }
 
     const newCrypto = await createCryptocurrency({
-      name: data.name,
-      symbol: data.symbol.toUpperCase(),
-      coingeckoId: data.id,
+      name: response.data.name,
+      symbol: response.data.symbol.toUpperCase(),
+      coingeckoId: response.data.id,
     });
 
     if (!newCrypto) {
       return res.status(400).send({
         status_code: 400,
-        results: {},
         errors: ['Coin already exists!'],
       });
     }
@@ -108,13 +103,11 @@ export async function createCryptocurrencyCoinGecko(
     return res.status(200).send({
       status_code: 200,
       results: newCrypto,
-      errors: [],
     });
   } catch (err) {
     return res.status(500).send({
       status_code: 500,
-      results: [],
       errors: [err.message],
     });
   }
-}
+};

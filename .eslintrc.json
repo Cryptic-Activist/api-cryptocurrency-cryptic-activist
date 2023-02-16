@@ -29,6 +29,8 @@
     "no-await-in-loop": "off",
     "no-useless-escape": "off",
     "camelcase": "off",
-    "operator-linebreak": "off"
+    "operator-linebreak": "off",
+    "no-undef": "off",
+    "implicit-arrow-linebreak": "off"
   }
 }
