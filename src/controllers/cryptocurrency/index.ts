@@ -1,7 +1,7 @@
-import { fetchGet } from '@services/axios';
-import { getCoinPrice } from '@services/coinGecko';
 import { createCryptocurrency, getCryptocurrency } from 'base-ca';
 import { Request, Response } from 'express';
+import { fetchGet } from '../../services/axios';
+import { getCoinPrice } from '../../services/coinGecko';
 
 export const getPrice = async (req: Request, res: Response) => {
   try {

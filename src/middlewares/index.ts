@@ -1,9 +1,9 @@
-import { Application, urlencoded, json } from 'express';
 import cors from 'cors';
-import morgan from 'morgan';
+import { Application, json, urlencoded } from 'express';
 import session from 'express-session';
+import morgan from 'morgan';
 
-import corsOptions from '@config/middlewares/cors';
+import corsOptions from '../config/middlewares/cors';
 
 export default (app: Application): void => {
   app.use(cors(corsOptions));

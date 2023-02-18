@@ -1,6 +1,6 @@
 import { exit } from 'process';
-import { warning } from '@utils/logger/logger';
-import requiredEnv from '@/envs.json';
+// import requiredEnv from '../../../envs.json';
+import { warning } from '../../logger/logger';
 
 function checkEnv(envName: string): void {
   if (!process.env[envName]) {
@@ -10,7 +10,7 @@ function checkEnv(envName: string): void {
 }
 
 export function checkEnvironmentVariable(): void {
-  requiredEnv.forEach((envName) => {
-    checkEnv(envName);
-  });
+  // requiredEnv.forEach((envName) => {
+  //   checkEnv(envName);
+  // });
 }

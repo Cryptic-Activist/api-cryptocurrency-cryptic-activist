@@ -4,8 +4,8 @@ import {
   createCryptocurrenciesCoinGecko,
   index,
   indexCoinGecko,
-} from '@controllers/cryptocurrencies';
-import { authenticateUser } from '@middlewares/authorization';
+} from '../../controllers/cryptocurrencies';
+import { authenticateUser } from '../../middlewares/authorization';
 
 const router = Router();
 
