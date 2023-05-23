@@ -8,7 +8,7 @@
     "test:w": "jest --watch",
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "start": "node dist/src/server.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/server.js\"",
+    "dev": "tsx watch src/server.ts",
     "refresh": "rm -rf ./node_modules ./yarn.lock ./yarn-error.log && yarn install"
   },
   "husky": {
