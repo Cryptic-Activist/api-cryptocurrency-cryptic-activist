@@ -1,3 +1,21 @@
+import {
+  CHAT_API_ENDPOINT,
+  CRYPTOCURRENCY_API_ENDPOINT,
+  FIAT_API_ENDPOINT,
+  OFFER_API_ENDPOINT,
+  TRADE_API_ENDPOINT,
+  USER_API_ENDPOINT,
+} from '../../../constants/envs';
+
 export default {
-  origin: [process.env.CRYPTIC_ACTIVIST_CATALOG, process.env.ADMIN_CRYPTIC_ACTIVIST_CATALOG] as string[],
+  origin: [
+    CHAT_API_ENDPOINT,
+    CRYPTOCURRENCY_API_ENDPOINT,
+    FIAT_API_ENDPOINT,
+    OFFER_API_ENDPOINT,
+    TRADE_API_ENDPOINT,
+    USER_API_ENDPOINT,
+    process.env.CRYPTIC_ACTIVIST_CATALOG,
+    process.env.ADMIN_CRYPTIC_ACTIVIST_CATALOG,
+  ] as string[],
 };
