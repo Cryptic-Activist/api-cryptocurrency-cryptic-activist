@@ -7,6 +7,8 @@ export const CRYPTOCURRENCY_API_ENDPOINT = process.env
   .CRYPTOCURRENCY_API_ENDPOINT as string;
 export const FIAT_API_ENDPOINT = process.env.FIAT_API_ENDPOINT as string;
 export const TRADE_API_ENDPOINT = process.env.TRADE_API_ENDPOINT as string;
+export const NEW_CRYPTIC_ACTIVIST_CATALOG = process.env
+  .NEW_CRYPTIC_ACTIVIST_CATALOG as string;
 export const WEB3_ETHEREUM_HTTP_PROVIDER = process.env
   .WEB3_ETHEREUM_HTTP_PROVIDER as string;
 export const CRYPTIC_ACTIVIST_CATALOG = process.env
