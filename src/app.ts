@@ -1,9 +1,9 @@
 import 'dotenv/config';
+
 import express from 'express';
 
-import middlewares from './middlewares/index';
-
-import routes from './routes/index';
+import middlewares from '@/middlewares';
+import routes from '@/routes';
 
 const app = express();
 

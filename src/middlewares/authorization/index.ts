@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { getAuth } from '../../services/api';
+
+import { getAuth } from '@/services/api';
+
 import { AuthenticateUser } from './zod';
 
 export const authenticateUser = async (
@@ -16,7 +18,7 @@ export const authenticateUser = async (
     if (!authorized.success) {
       return res.status(401).send({
         status_code: 401,
-        // ../../ts-ignore
+        // @/ts-ignore
         errors: authorized.error,
       });
     }

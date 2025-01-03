@@ -4,8 +4,9 @@ import {
   getCryptocurrencies,
 } from 'base-ca';
 import { Request, Response } from 'express';
-import { fetchGet } from '../../services/axios';
-import { filterLongShort } from '../../utils/filters/cryptocurrencies';
+
+import { fetchGet } from '@/services/axios';
+import { filterLongShort } from '@/utils/filters/cryptocurrencies';
 
 export const index = async (
   _req: Request,

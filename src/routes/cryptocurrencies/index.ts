@@ -4,7 +4,7 @@ import {
   createCryptocurrenciesCoinGecko,
   index,
   indexCoinGecko,
-} from '../../controllers/cryptocurrencies';
+} from '@/controllers/cryptocurrencies';
 
 const router = Router();
 

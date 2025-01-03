@@ -1,6 +1,7 @@
 import { exit } from 'process';
+
 // import requiredEnv from '../../../envs.json';
-import { warning } from '../../logger/logger';
+import { warning } from '@/utils/logger/logger';
 
 function checkEnv(envName: string): void {
   if (!process.env[envName]) {

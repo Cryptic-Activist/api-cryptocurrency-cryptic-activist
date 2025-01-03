@@ -4,14 +4,13 @@ import {
   createCryptocurrencyCoinGecko,
   getCryptocurrencyController,
   getPrice,
-} from '../../controllers/cryptocurrency';
-
-import { authenticateUser } from '../../middlewares/authorization';
+} from '@/controllers/cryptocurrency';
+import { authenticateUser } from '@/middlewares/authorization';
 import {
   validateCreateCryptocurrencyCoinGecko,
   validateGetCryptocurrency,
   validateGetPrice,
-} from '../../middlewares/validators/request/cryptocurrency';
+} from '@/middlewares/validators/request/cryptocurrency';
 
 const router = Router();
 
