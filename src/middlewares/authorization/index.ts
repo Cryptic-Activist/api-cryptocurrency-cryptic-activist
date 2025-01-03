@@ -17,8 +17,6 @@ export const authenticateUser = async (
 
     if (!authorized.success) {
       return res.status(401).send({
-        status_code: 401,
-        // @/ts-ignore
         errors: authorized.error,
       });
     }
@@ -26,15 +24,12 @@ export const authenticateUser = async (
     const auth = await getAuth(authorization);
 
     if (!auth) {
-      return res.status(401).send({
-        status_code: 401,
-      });
+      return res.status(401).send({});
     }
 
     next();
   } catch (err) {
     return res.status(401).send({
-      status_code: 401,
       errors: [err.message],
     });
   }

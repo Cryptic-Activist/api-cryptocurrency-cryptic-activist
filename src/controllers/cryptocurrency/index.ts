@@ -14,18 +14,15 @@ export const getPrice = async (req: Request, res: Response) => {
     // @ts-ignore
     if (price && price[id] && Object.entries(price[id]).length > 0) {
       return res.status(200).send({
-        status_code: 200,
-        results: price,
+        ...price,
       });
     }
 
     return res.status(400).send({
-      status_code: 400,
       errors: ['Cryptocurrency not found.'],
     });
   } catch (err) {
     return res.status(500).send({
-      status_code: 500,
       errors: [err.message],
     });
   }
@@ -45,26 +42,18 @@ export const getCryptocurrencyController = async (
 
     if (!crypto) {
       return res.status(400).send({
-        status_code: 400,
-        results: {},
         errors: ['Coin does not exist!'],
       });
     }
 
     return res.status(200).send({
-      status_code: 200,
-      results: {
-        coingeckoId: crypto.coingeckoId,
-        id: crypto.id,
-        name: crypto.name,
-        symbol: crypto.symbol,
-      },
-      errors: [],
+      coingeckoId: crypto.coingeckoId,
+      id: crypto.id,
+      name: crypto.name,
+      symbol: crypto.symbol,
     });
   } catch (err) {
     return res.status(500).send({
-      status_code: 500,
-      results: [],
       errors: [err.message],
     });
   }
@@ -83,7 +72,6 @@ export const createCryptocurrencyCoinGecko = async (
 
     if (response.status !== 200) {
       return res.status(400).send({
-        status_code: 400,
         errors: ["Couldn't fetch cryptocurrency information"],
       });
     }
@@ -96,18 +84,15 @@ export const createCryptocurrencyCoinGecko = async (
 
     if (!newCrypto) {
       return res.status(400).send({
-        status_code: 400,
         errors: ['Coin already exists!'],
       });
     }
 
     return res.status(200).send({
-      status_code: 200,
-      results: newCrypto,
+      ...newCrypto,
     });
   } catch (err) {
     return res.status(500).send({
-      status_code: 500,
       errors: [err.message],
     });
   }

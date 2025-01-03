@@ -15,13 +15,9 @@ export const index = async (
   try {
     const cryptocurrencies = await getCryptocurrencies();
 
-    return res.status(200).send({
-      status_code: 200,
-      results: cryptocurrencies,
-    });
+    return res.status(200).send([...cryptocurrencies]);
   } catch (err) {
     return res.status(500).send({
-      status_code: 500,
       errors: [err.message],
     });
   }
@@ -51,12 +47,10 @@ export async function indexCoinGecko(
     const promises = await Promise.all(createdCryptocurrencyMapped);
 
     return res.status(200).send({
-      status_code: 200,
-      results: promises,
+      ...promises,
     });
   } catch (err) {
     return res.status(500).send({
-      status_code: 500,
       errors: [err.message],
     });
   }
@@ -78,12 +72,10 @@ export const createCryptocurrenciesCoinGecko = async (
     const created = await createManyCryptocurrencies(mappped);
 
     return res.status(200).send({
-      status_code: 200,
-      results: created,
+      ...created,
     });
   } catch (err) {
     return res.status(500).send({
-      status_code: 500,
       errors: [err.message],
     });
   }

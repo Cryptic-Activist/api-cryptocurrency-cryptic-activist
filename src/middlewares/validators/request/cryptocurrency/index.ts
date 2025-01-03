@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+
 import {
   CreateCryptocurrencyCoinGecko,
   GetCryptocurrency,
@@ -16,8 +17,6 @@ export const validateGetPrice = (
 
   if (!validated.success) {
     return res.status(400).send({
-      status_code: 400,
-      // @ts-ignore
       errors: validated.error,
     });
   }
@@ -36,8 +35,6 @@ export const validateCreateCryptocurrencyCoinGecko = (
 
   if (!validated.success) {
     return res.status(400).send({
-      status_code: 400,
-      // @ts-ignore
       errors: validated.error,
     });
   }
@@ -56,8 +53,6 @@ export const validateGetCryptocurrency = (
 
   if (!validated.success) {
     return res.status(400).send({
-      status_code: 400,
-      // @ts-ignore
       errors: validated.error,
     });
   }

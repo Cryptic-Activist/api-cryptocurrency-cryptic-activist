@@ -6,8 +6,8 @@
   "scripts": {
     "test": "cross-env NODE_ENV=development jest",
     "test:w": "jest --watch",
-    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
-    "start": "node dist/src/server.js",
+    "build": "tsup src",
+    "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
     "refresh": "rm -rf ./node_modules ./yarn.lock ./yarn-error.log && yarn install"
   },
@@ -22,11 +22,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.26.4",
-    "@babel/core": "^7.26.0",
-    "@babel/node": "^7.26.0",
-    "@babel/preset-env": "^7.26.0",
-    "@babel/preset-typescript": "^7.26.0",
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^11.0.0",
     "@types/bcryptjs": "^2.4.6",
@@ -45,8 +40,6 @@
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
-    "babel-eslint": "^10.1.0",
-    "babel-plugin-module-resolver": "^4.1.0",
     "commitizen": "^4.3.1",
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
